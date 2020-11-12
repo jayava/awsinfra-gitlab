@@ -1,0 +1,21 @@
+{
+  "environment": {
+    "name": "1k",
+    "url": "https://repo.gjayavagitlab.com",
+    "user": "gpt-bot",
+    "config": {
+      "latency": "0"
+    },
+    "storage_nodes": ["default", "storage2"]
+  },
+  "gpt_data": {
+    "root_group": "gpt",
+    "many_groups_and_projects": {git
+      "group": "many_groups_and_projects",
+      "subgroups": 250,
+      "subgroup_prefix": "gpt-subgroup-",
+      "projects": 10,
+      "project_prefix": "gpt-project-"
+    }
+  }
+}
