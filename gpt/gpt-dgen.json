@@ -10,7 +10,7 @@
   },
   "gpt_data": {
     "root_group": "gpt",
-    "many_groups_and_projects": {git
+    "many_groups_and_projects": {
       "group": "many_groups_and_projects",
       "subgroups": 250,
       "subgroup_prefix": "gpt-subgroup-",
