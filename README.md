@@ -1,2 +1,2 @@
-# awsinfra
-Terraform for AWS
+# awsinfra-gitlab
+Setup GitLab on AWS with Terraform
