@@ -1,0 +1,5 @@
+name: gitlab-jayava-tf-us-e2
+
+aws:
+  region: us-east-2
+
