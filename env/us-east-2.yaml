@@ -1,4 +1,4 @@
-name: gitlab-jayava-tf-us-e2
+name: gitlab-jayava-tf
 
 aws:
   region: us-east-2
