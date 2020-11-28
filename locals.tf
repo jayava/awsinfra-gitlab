@@ -8,21 +8,21 @@ locals {
   subnets = local.env.network.subnets
 
   gitlab_subnets = {
-    subnets.public.pa.name = {
-        az = subnets.public.pa.az
-        cidr = subnets.public.pa.cidr
+    local.subnets.public.pa.name = {
+        az = local.subnets.public.pa.az
+        cidr = local.subnets.public.pa.cidr
     }
-    subnets.public.pb.name = {
-      az = subnets.public.pb.az
-      cidr = subnets.public.pb.cidr
+    local.subnets.public.pb.name = {
+      az = local.subnets.public.pb.az
+      cidr = local.subnets.public.pb.cidr
     }
-    subnets.private.pa.name = {
-      az = subnets.private.pa.az
-      cidr = subnets.private.pa.cidr
+    local.subnets.private.pa.name = {
+      az = local.subnets.private.pa.az
+      cidr = local.subnets.private.pa.cidr
     }
-    subnets.private.pb.name = {
-      az = subnets.private.pb.az
-      cidr = subnets.private.pb.cidr
+    local.subnets.private.pb.name = {
+      az = local.subnets.private.pb.az
+      cidr = local.subnets.private.pb.cidr
     }
   }
 }
