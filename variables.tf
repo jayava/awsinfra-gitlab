@@ -9,3 +9,13 @@ variable "region" {
 variable "vpc_cidr_range" {
   description = "CIDR range for VPC"
 }
+
+variable "gitlab_subnet_descriptors" {
+  description = "gitlab subnet descriptors"
+  type = set(
+  object({
+    az: string
+    cidr: string
+    name: string
+  }))
+}
