@@ -3,3 +3,5 @@ name: gitlab-jayava-tf-us-e2
 aws:
   region: us-east-2
 
+network:
+  vpc-cidr: 10.0.0.0/16

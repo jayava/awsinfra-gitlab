@@ -1,4 +1,4 @@
 provider "aws" {
-  region = var.region
+  region = local.env.aws.region
   version = "~> 3.15.0"
 }
