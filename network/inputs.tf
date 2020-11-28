@@ -4,7 +4,7 @@ variable "vpc_cidr_range" {
 
 variable "gitlab_subnet_descriptors" {
   description = "gitlab subnet descriptors"
-  type = set(
+  type = map (
   object({
     az: string
     cidr: string
