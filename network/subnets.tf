@@ -7,7 +7,7 @@ resource "aws_subnet" "gitlab-public-subnet-a" {
   {
     Name = "gitlab-public-subnets-a"
   }
-  }
+  )
 }
 
 resource "aws_subnet" "gitlab-public-subnet-b" {
