@@ -3,5 +3,5 @@ output "gitlab_vpc_id" {
 }
 
 output "gitlab-subnets" {
-  value = aws_subnet.gitlab-subnets[*].id
+  value = [for subnet in aws_subnet.gitlab-subnets: subnet.id]
 }
