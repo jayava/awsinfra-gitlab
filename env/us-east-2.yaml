@@ -5,3 +5,22 @@ aws:
 
 network:
   vpc-cidr: 10.0.0.0/16
+  subnets:
+    public:
+      pa:
+        name: gitlab-public-a
+        az: us-east-2a
+        cidr: 10.0.0.0/24
+      pb:
+        name: gitlab-public-b
+        az: us-east-2b
+        cidr: 10.0.2.0/24
+    private:
+      pa:
+        name: gitlab-private-a
+        az: us-east-2a
+        cidr: 10.0.1.0/24
+      pb:
+        name: gitlab-private-b
+        az: us-east-2b
+        cidr: 10.0.3.0/24
