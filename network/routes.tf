@@ -57,6 +57,6 @@ resource "aws_route_table_association" "gitlab-public-route-tbl-assoc" {
 
 resource "aws_route_table_association" "gitlab-private-route-tbl-assoc" {
   count = length(var.availability_zones)
-  route_table_id = aws_route_table.gitlab-private-route-tbl.id
+  route_table_id = aws_route_table.gitlab-private-route-tbl[count.index].id
   subnet_id = aws_subnet.gitlab-private-subnets[count.index].id
 }
