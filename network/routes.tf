@@ -15,7 +15,7 @@ resource "aws_eip" "eip" {
 
 resource "aws_nat_gateway" "gitlab-natgw" {
   for_each = aws_subnet.gitlab-public-subnets
-  allocation_id = values(aws_eip.eip.id)[count.index]
+  allocation_id = aws_eip.eip[count.index].id
   subnet_id =   aws_subnet.gitlab-public-subnets[each.key].id
   tags = merge(var.common_tags, {
     Name = format("gitlab-ngw-%s", aws_subnet.gitlab-public-subnets[each.key].id)
