@@ -5,7 +5,7 @@ locals {
     Environment = format("%s-%s", local.env.name, local.env.aws.region)
   }
 
-  subnets = tomap({
+  gitlab_subnets = tomap({
   for sbd in local.env.network.subnets :
   sbd.name => object({
     az: sbd.az
