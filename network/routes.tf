@@ -6,19 +6,19 @@ resource "aws_internet_gateway" "gitlab-igw" {
 }
 
 resource "aws_eip" "eip" {
-  count = length(var.gitlab_subnet_descriptors)
+  count = length(var.availability_zones)
   vpc = true
   tags = merge(var.common_tags, {
     Name = format("gitlab-public-subnets-eip-%s", count.index)
   })
 }
 
-resource "aws_nat_gateway" "gitlab-natgw" {
-  for_each = aws_subnet.gitlab-public-subnets
-  allocation_id = aws_eip.eip.allocation_id
-  subnet_id = aws_subnet.gitlab-public-subnets[each.key].id
+resource "aws_nat_gateway" "gitlab-ngw" {
+  count = length(var.availability_zones)
+  allocation_id = element(aws_eip.eip[*].id, count.index)
+  subnet_id = element(aws_subnet.gitlab-public-subnets[*].id, count.index)
   tags = merge(var.common_tags, {
-    Name = format("gitlab-ngw-%s", aws_subnet.gitlab-public-subnets[each.key].id)
+    Name = format("gitlab-ngw-%s", element(var.availability_zones, count.index))
   })
   depends_on = [
     aws_internet_gateway.gitlab-igw]
@@ -36,14 +36,34 @@ resource "aws_route_table" "gitlab-public-route-tbl" {
   })
 }
 
-//resource "aws_route_table" "gitlab-private-route-tbl" {
-//  vpc_id = aws_vpc.gitlab-vpc.id
-//  route {
-//    cidr_block = "0.0.0.0/0"
-//    nat_gateway_id = aws_nat_gateway.gitlab-natgw[*].id
-//  }
-//  tags = merge(var.common_tags,
-//  {
-//    Name = "private-subnets-route-table"
-//  })
-//}
+resource "aws_route_table" "gitlab-private-route-tbl" {
+  count = length(var.availability_zones)
+  vpc_id = aws_vpc.gitlab-vpc.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    nat_gateway_id = element(aws_nat_gateway.gitlab-ngw[*].id, count.index)
+  }
+  tags = merge(var.common_tags,
+  {
+    Name = format("gitlab-private-route-table-%s", element(var.availability_zones, count.index))
+  })
+}
+
+resource "aws_route_table_association" "gitlab-public-route-tbl-assoc" {
+  count = length(var.availability_zones)
+  route_table_id = aws_route_table.gitlab-public-route-tbl.id
+  subnet_id = element(aws_subnet.gitlab-public-subnets[*].id, count.index)
+  tags = merge(var.common_tags,
+  {
+    Name = format("gitlab-public-route-table-assoc-%s", element(var.availability_zones, count.index))
+  })
+}
+resource "aws_route_table_association" "gitlab-private-route-tbl-assoc" {
+  count = length(var.availability_zones)
+  route_table_id = aws_route_table.gitlab-private-route-tbl.id
+  subnet_id = element(aws_subnet.gitlab-private-subnets[*].id, count.index)
+  tags = merge(var.common_tags,
+  {
+    Name = format("gitlab-private-route-table-assoc-%s", element(var.availability_zones, count.index))
+  })
+}

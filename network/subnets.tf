@@ -1,22 +1,22 @@
 resource "aws_subnet" "gitlab-public-subnets" {
-  for_each = local.gitlab_public_subnets
+  count = length(var.availability_zones)
   vpc_id = aws_vpc.gitlab-vpc.id
-  cidr_block = each.value.cidr
-  availability_zone = each.value.az
+  cidr_block = cidrsubnet(var.vpc_cidr_range, 8, count.index)
+  availability_zone = element(var.availability_zones, count.index)
   tags = merge(var.common_tags,
   {
-    Name = each.key
+    Name = format("gitlab-public-subnets-%s", element(var.availability_zones, count.index))
   })
 }
 
 resource "aws_subnet" "gitlab-private-subnets" {
-  for_each = local.gitlab_private_subnets
+  count = length(var.availability_zones)
   vpc_id = aws_vpc.gitlab-vpc.id
-  cidr_block = each.value.cidr
-  availability_zone = each.value.az
+  cidr_block = cidrsubnet(var.vpc_cidr_range, 8, count.index * 2)
+  availability_zone = element(var.availability_zones, count.index)
   tags = merge(var.common_tags,
   {
-    Name = each.key
+    Name = format("gitlab-public-subnets-%s", element(var.availability_zones, count.index))
   })
 }
 
