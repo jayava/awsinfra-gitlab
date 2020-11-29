@@ -6,7 +6,7 @@ resource "aws_internet_gateway" "gitlab-igw" {
 }
 
 resource "aws_eip" "eip" {
-  count = length(values(aws_subnet.gitlab-public-subnets.id))
+  count = length(values(var.gitlab_subnet_descriptors.name))
   vpc = true
   tags = merge(var.common_tags, {
     Name = format("gitlab-public-subnets-eip-%s", count.index)
