@@ -15,11 +15,13 @@ resource "aws_eip" "eip" {
 
 resource "aws_nat_gateway" "gitlab-natgw" {
   for_each = aws_subnet.gitlab-public-subnets
-  allocation_id = aws_eip.eip[*].id
-  subnet_id =   aws_subnet.gitlab-public-subnets[each.key].id
+  allocation_id = aws_eip.eip.allocation_id
+  subnet_id = aws_subnet.gitlab-public-subnets[each.key].id
   tags = merge(var.common_tags, {
     Name = format("gitlab-ngw-%s", aws_subnet.gitlab-public-subnets[each.key].id)
   })
+  depends_on = [
+    aws_internet_gateway.gitlab-igw]
 }
 
 resource "aws_route_table" "gitlab-public-route-tbl" {
