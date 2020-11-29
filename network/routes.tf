@@ -41,7 +41,7 @@ resource "aws_route_table" "gitlab-private-route-tbl" {
   vpc_id = aws_vpc.gitlab-vpc.id
   route {
     cidr_block = "0.0.0.0/0"
-    nat_gateway_id = element(aws_nat_gateway.gitlab-ngw[*].id, count.index)
+    nat_gateway_id = aws_nat_gateway.gitlab-ngw[count.index].id
   }
   tags = merge(var.common_tags,
   {
@@ -52,11 +52,11 @@ resource "aws_route_table" "gitlab-private-route-tbl" {
 resource "aws_route_table_association" "gitlab-public-route-tbl-assoc" {
   count = length(var.availability_zones)
   route_table_id = aws_route_table.gitlab-public-route-tbl.id
-  subnet_id = element(aws_subnet.gitlab-public-subnets[*].id, count.index)
+  subnet_id = aws_subnet.gitlab-public-subnets[count.index].id
 }
 
 resource "aws_route_table_association" "gitlab-private-route-tbl-assoc" {
   count = length(var.availability_zones)
   route_table_id = aws_route_table.gitlab-private-route-tbl.id
-  subnet_id = element(aws_subnet.gitlab-private-subnets[*].id, count.index)
+  subnet_id = aws_subnet.gitlab-private-subnets[count.index].id
 }
