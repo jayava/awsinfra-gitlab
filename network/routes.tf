@@ -6,10 +6,10 @@ resource "aws_internet_gateway" "gitlab-igw" {
 }
 
 resource "aws_eip" "eip" {
-  for_each = local.gitlab_public_subnets
+  count = length(aws_subnet.gitlab-public-subnets)
   vpc = true
   tags = merge(var.common_tags, {
-    Name = format("gitlab-public-subnets-eip-%s", each.key)
+    Name = format("gitlab-public-subnets-eip-%s", aws_subnet.gitlab-public-subnets[count.index].id)
   })
 }
 
