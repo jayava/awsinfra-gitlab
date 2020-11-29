@@ -8,6 +8,7 @@ locals {
   gitlab_subnets = tomap({
   for sbd in local.env.network.subnets :
   sbd.name => {
+    name: sbd.name
     az: sbd.az
     cidr: sbd.cidr
     type: sbd.type
