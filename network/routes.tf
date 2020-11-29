@@ -15,7 +15,7 @@ resource "aws_eip" "eip" {
 
 resource "aws_nat_gateway" "gitlab-natgw" {
   for_each = aws_subnet.gitlab-public-subnets
-  allocation_id = aws_eip.eip[*].id
+  allocation_id = values(aws_eip.eip)[*].id
   subnet_id = each.value.id
   depends_on = [
     aws_internet_gateway.gitlab-igw]
