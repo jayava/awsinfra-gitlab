@@ -10,6 +10,5 @@ resource "aws_route_table" "gitlab-public-route-tbl" {
   tags = merge(var.common_tags,
   {
     Name = "public-route-table"
-  }
-  )
+  })
 }

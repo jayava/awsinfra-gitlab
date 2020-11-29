@@ -8,6 +8,7 @@ variable "gitlab_subnet_descriptors" {
   object({
     az: string
     cidr: string
+    type: string
   }))
 }
 
