@@ -9,18 +9,18 @@ resource "aws_eip" "eip" {
   count = length(aws_subnet.gitlab-public-subnets)
   vpc = true
   tags = merge(var.common_tags, {
-    Name = format("gitlab-public-subnets-eip-%s", aws_subnet.gitlab-public-subnets[count.index].id)
+    Name = format("gitlab-public-subnets-eip-%s", values(aws_subnet.gitlab-public-subnets.id)[count.index])
   })
 }
 
 resource "aws_nat_gateway" "gitlab-natgw" {
   count = length(aws_subnet.gitlab-public-subnets)
-  allocation_id = aws_eip.eip[count.index].id
-  subnet_id = aws_subnet.gitlab-public-subnets[count.index].id
+  allocation_id = values(aws_eip.eip.id)[count.index]
+  subnet_id = values(aws_subnet.gitlab-public-subnets.id)[count.index]
   depends_on = [
     aws_internet_gateway.gitlab-igw]
   tags = merge(var.common_tags, {
-    Name = format("gitlab-ngw-%s", aws_subnet.gitlab-public-subnets[count.index].id)
+    Name = format("gitlab-ngw-%s", values(aws_subnet.gitlab-public-subnets.id)[count.index])
   })
 }
 
