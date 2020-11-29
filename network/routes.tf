@@ -15,8 +15,8 @@ resource "aws_eip" "eip" {
 
 resource "aws_nat_gateway" "gitlab-ngw" {
   count = length(var.availability_zones)
-  allocation_id = element(aws_eip.eip[*].id, count.index)
-  subnet_id = element(aws_subnet.gitlab-public-subnets[*].id, count.index)
+  allocation_id = aws_eip.eip[count.index].id
+  subnet_id = aws_subnet.gitlab-public-subnets[count.index].id
   tags = merge(var.common_tags, {
     Name = format("gitlab-ngw-%s", element(var.availability_zones, count.index))
   })
@@ -53,17 +53,10 @@ resource "aws_route_table_association" "gitlab-public-route-tbl-assoc" {
   count = length(var.availability_zones)
   route_table_id = aws_route_table.gitlab-public-route-tbl.id
   subnet_id = element(aws_subnet.gitlab-public-subnets[*].id, count.index)
-  tags = merge(var.common_tags,
-  {
-    Name = format("gitlab-public-route-table-assoc-%s", element(var.availability_zones, count.index))
-  })
 }
+
 resource "aws_route_table_association" "gitlab-private-route-tbl-assoc" {
   count = length(var.availability_zones)
   route_table_id = aws_route_table.gitlab-private-route-tbl.id
   subnet_id = element(aws_subnet.gitlab-private-subnets[*].id, count.index)
-  tags = merge(var.common_tags,
-  {
-    Name = format("gitlab-private-route-table-assoc-%s", element(var.availability_zones, count.index))
-  })
 }
