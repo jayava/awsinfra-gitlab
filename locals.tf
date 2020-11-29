@@ -5,12 +5,12 @@ locals {
     Environment = format("%s-%s", local.env.name, local.env.aws.region)
   }
 
-  subnets = tomap(
-    for sbd in local.env.network.subnets :
-        sbd.name => object({
-          az: sbd.az
-          cidr: sbd.cidr
-          type: sbd.type
-        })
-  )
+  subnets = tomap({
+  for sbd in local.env.network.subnets :
+  sbd.name => object({
+    az: sbd.az
+    cidr: sbd.cidr
+    type: sbd.type
+  })
+  })
 }
