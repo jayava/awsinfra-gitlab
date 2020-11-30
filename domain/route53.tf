@@ -19,6 +19,7 @@ resource "aws_route53_zone" "gitlab" {
   {
     Name = "Base Domain for hosting GitLab"
   })
+  depends_on = [aws_route53_zone.base-domain-public]
 }
 
 resource "aws_route53_record" "gitlab-ns" {
